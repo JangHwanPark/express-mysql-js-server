@@ -2,17 +2,753 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-    <link rel="stylesheet" href="../styles.css">
+    <title>앤드포인트 Guide</title>
 </head>
 <body>
-<header class="main_header">
-    <a href="../index.ejs">
-        <h1>MOCK</h1>
-    </a>
-    <nav class="main_nav">
-        <a href="index.html" class="modal-button">Guide</a>
-    </nav>
-</header>
+<section class="guide">
+    <div class="get-all">
+        <h1>전체 조회</h1>
+        <h2>EndPoint</h2>
+        <h3>GET Users/get/all</h3>
+        <p>이 앤드포인는 모든 유저를 조회하는 역할을 합니다. 클라이언트가 /users/get/all 엔드포인트로 GET 요청을 보내면, 모든 유저 정보를 조회합니다. 성공 시 모든 유저 정보를 반환하며 실패 시 오류 메시지를 반환합니다.</p>
+
+        <h4>Path parameter</h4>
+        <table border="1">
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td>없음</td>
+                <td>이 엔드포인트에는 Path parameter가 없습니다.</td>
+            </tr>
+        </table>
+
+        <h4>Query string parameter</h4>
+        <table border="1" >
+            <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Required</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td>uid</td>
+                <td>varchar</td>
+                <td>X</td>
+                <td>유저의 아이디입니다</td>
+
+        </table>
+
+        <h4>응답 예시 (성공)</h4>
+        <pre>
+        {
+            "uid": "123456",
+            "name": "홍길동",
+            "age": 25,
+            "city": "서울",
+            "email": "hong@example.com",
+            "phone": "010-1234-5678",
+            "gender": "남성",
+            "occupation": "개발자",
+            "join_date": "2023-06-07",
+            "address": "서울특별시 강남구",
+            "password": "securepassword123"
+        }
+        </pre>
+        <p>이런식으로 모든 유저의 데이터가 출력됩니다.</p>
+
+        <h4>응답 예시 (실패)</h4>
+        <pre>
+        {
+            "error": "유저 조회 실패: ${error.message}"
+        }
+        </pre>
+    </div>
+</section>
+<section class="error">
+    <h1>Error Codes Middleware</h1>
+    <p>미들웨어는 두 개의 소프트웨어 시스템 간의 중간 계층 역할을 하며 여기서는 요청과 응답 사이에서 발생하는 다양한 오류를 처리하는 에러 코드 미들웨어에 대해 설명합니다.<br>
+        이 미들웨어는 서버에서 발생하는 다양한 오류 상황을 클라이언트에게 적절한 형태로 전달하는 역할을 합니다.</p>
+    <table border="1">
+        <thead>
+        <tr>
+            <th>Error Name</th>
+            <th>Status Code</th>
+            <th>Error Code</th>
+            <th>Error Message</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>ValidationError</td>
+            <td>400</td>
+            <td>100</td>
+            <td>Bad Request Exception</td>
+            <td>잘못된 요청입니다. 입력값을 확인해주세요.</td>
+        </tr>
+        <tr>
+            <td>AuthenticationError</td>
+            <td>401</td>
+            <td>200</td>
+            <td>Authentication Failed</td>
+            <td>인증에 실패했습니다. 로그인 정보를 확인해주세요.</td>
+        </tr>
+        <tr>
+            <td>PermissionError</td>
+            <td>403</td>
+            <td>210</td>
+            <td>Permission Denied</td>
+            <td>권한이 없습니다. 접근 권한을 확인해주세요.</td>
+        </tr>
+        <tr>
+            <td>NotFoundError</td>
+            <td>404</td>
+            <td>300</td>
+            <td>Not Found Exception</td>
+            <td>찾을 수 없습니다. URL을 확인해주세요.</td>
+        </tr>
+        <tr>
+            <td>QuotaExceededError</td>
+            <td>429</td>
+            <td>400</td>
+            <td>Quota Exceeded</td>
+            <td>할당량을 초과했습니다. 나중에 다시 시도해주세요.</td>
+        </tr>
+        <tr>
+            <td>RateLimitError</td>
+            <td>429</td>
+            <td>420</td>
+            <td>Rate Limited</td>
+            <td>요청이 너무 많습니다. 잠시 후 다시 시도해주세요.</td>
+        </tr>
+        <tr>
+            <td>RequestEntityTooLargeError</td>
+            <td>413</td>
+            <td>430</td>
+            <td>Request Entity Too Large</td>
+            <td>요청한 내용이 너무 큽니다. 크기를 줄여서 다시 시도해주세요.</td>
+        </tr>
+        <tr>
+            <td>ServiceUnavailableError</td>
+            <td>503</td>
+            <td>500</td>
+            <td>Service Unavailable</td>
+            <td>서비스를 사용할 수 없습니다. 잠시 후 다시 시도해주세요.</td>
+        </tr>
+        <tr>
+            <td>GatewayTimeoutError</td>
+            <td>504</td>
+            <td>510</td>
+            <td>Gateway Timeout</td>
+            <td>응답 시간이 초과되었습니다. 잠시 후 다시 시도해주세요.</td>
+        </tr>
+        <tr>
+            <td>Default (Unexpected Error)</td>
+            <td>500</td>
+            <td>900</td>
+            <td>Unexpected Error</td>
+            <td>알 수 없는 오류가 발생했습니다. 다시 시도해주세요.</td>
+        </tr>
+        </tbody>
+    </table>
+</section>
+
+<section class="guide">
+    <div class="get-books">
+        <h2>EndPoint</h2>
+        <h3>GET /books/books</h3>
+        <p>이 앤드포인는 모든 책을 조회하는 역할을 합니다. 클라이언트가 /books/books 엔드포인트로 GET 요청을 보내면, 모든 책의 정보를 조회합니다. 성공 시 모든 책의 정보를 반환하며 실패 시 오류 메시지를 반환합니다.</p>
+
+        <h4>Path parameter</h4>
+        <table border="1">
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td>없음</td>
+                <td>이 엔드포인트에는 Path parameter가 없습니다.</td>
+            </tr>
+        </table>
+
+        <h4>Query string parameter</h4>
+        <table border="1">
+            <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Required</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td>book_id</td>
+                <td>int</td>
+                <td>X</td>
+                <td>책의 id입니다.</td>
+            </tr>
+        </table>
+
+        <h4>응답 예시 (성공)</h4>
+        <pre>
+        {
+            "book_id": 2,
+            "name": "예약판매 최고의 프로덕트는 무엇이 다른가",
+            "category": "Computer Science",
+            "author": "공옥순",
+            "publisher": "2024.05.31",
+            "discount": "10%",
+            "price": "14,850원",
+            "price_normal": "정가16,500원",
+            "point": "820p",
+            "description": "소",
+            "review": "0.0",
+            "img": "kyobo/book_img_002.jpg"
+        }
+        </pre>
+        <p>이런식으로 모든 책들의 데이터가 출력됩니다.</p>
+
+        <h4>응답 예시 (실패)</h4>
+        <pre>
+        {
+            "error": "책 가져오기 실패: ${error.message}"
+        }
+        </pre>
+    </div>
+</section>
+<section class="error">
+    <h1>Error Codes Middleware</h1>
+    <p>미들웨어는 두 개의 소프트웨어 시스템 간의 중간 계층 역할을 하며 여기서는 요청과 응답 사이에서 발생하는 다양한 오류를 처리하는 에러 코드 미들웨어에 대해 설명합니다.<br>
+        이 미들웨어는 서버에서 발생하는 다양한 오류 상황을 클라이언트에게 적절한 형태로 전달하는 역할을 합니다.</p>
+    <table border="1">
+        <thead>
+        <tr>
+            <th>Error Name</th>
+            <th>Status Code</th>
+            <th>Error Code</th>
+            <th>Error Message</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>ValidationError</td>
+            <td>400</td>
+            <td>100</td>
+            <td>Bad Request Exception</td>
+            <td>잘못된 요청입니다. 입력값을 확인해주세요.</td>
+        </tr>
+        <tr>
+            <td>AuthenticationError</td>
+            <td>401</td>
+            <td>200</td>
+            <td>Authentication Failed</td>
+            <td>인증에 실패했습니다. 로그인 정보를 확인해주세요.</td>
+        </tr>
+        <tr>
+            <td>PermissionError</td>
+            <td>403</td>
+            <td>210</td>
+            <td>Permission Denied</td>
+            <td>권한이 없습니다. 접근 권한을 확인해주세요.</td>
+        </tr>
+        <tr>
+            <td>NotFoundError</td>
+            <td>404</td>
+            <td>300</td>
+            <td>Not Found Exception</td>
+            <td>찾을 수 없습니다. URL을 확인해주세요.</td>
+        </tr>
+        <tr>
+            <td>QuotaExceededError</td>
+            <td>429</td>
+            <td>400</td>
+            <td>Quota Exceeded</td>
+            <td>할당량을 초과했습니다. 나중에 다시 시도해주세요.</td>
+        </tr>
+        <tr>
+            <td>RateLimitError</td>
+            <td>429</td>
+            <td>420</td>
+            <td>Rate Limited</td>
+            <td>요청이 너무 많습니다. 잠시 후 다시 시도해주세요.</td>
+        </tr>
+        <tr>
+            <td>RequestEntityTooLargeError</td>
+            <td>413</td>
+            <td>430</td>
+            <td>Request Entity Too Large</td>
+            <td>요청한 내용이 너무 큽니다. 크기를 줄여서 다시 시도해주세요.</td>
+        </tr>
+        <tr>
+            <td>ServiceUnavailableError</td>
+            <td>503</td>
+            <td>500</td>
+            <td>Service Unavailable</td>
+            <td>서비스를 사용할 수 없습니다. 잠시 후 다시 시도해주세요.</td>
+        </tr>
+        <tr>
+            <td>GatewayTimeoutError</td>
+            <td>504</td>
+            <td>510</td>
+            <td>Gateway Timeout</td>
+            <td>응답 시간이 초과되었습니다. 잠시 후 다시 시도해주세요.</td>
+        </tr>
+        <tr>
+            <td>Default (Unexpected Error)</td>
+            <td>500</td>
+            <td>900</td>
+            <td>Unexpected Error</td>
+            <td>알 수 없는 오류가 발생했습니다. 다시 시도해주세요.</td>
+        </tr>
+        </tbody>
+    </table>
+</section>
+
+<section class="guide">
+    <div class="get-coupang-products">
+        <h2>EndPoint</h2>
+        <h3>GET /coupang-products/get/all</h3>
+        <p>이 앤드포인는 쿠팡의 모든 제품을 조회하는 역할을 합니다. 클라이언트가 /coupang-products/get/all 엔드포인트로 GET 요청을 보내면, 모든 쿠팡 제품의 정보를 조회합니다. 성공 시 모든 제품 정보를 반환하며 실패 시 오류 메시지를 반환합니다.</p>
+
+        <h4>Path parameter</h4>
+        <table border="1">
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td>없음</td>
+                <td>이 엔드포인트에는 Path parameter가 없습니다.</td>
+            </tr>
+        </table>
+
+        <h4>Query string parameter</h4>
+        <table border="1">
+            <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Required</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td>category</td>
+                <td>String</td>
+                <td>X</td>
+                <td>제품의 카테고리입니다. 예: Electronics, toys, women_fashion 기본값은 모든 카테고리입니다.</td>
+            </tr>
+
+        </table>
+
+        <h4>응답 예시 (성공)</h4>
+        <pre>
+        {
+            "pid": "6001",
+            "category": "Electronics",
+            "name": "Smartphone",
+            "base_price": "100000",
+            "price": "90000",
+            "unit_price": "90000",
+            "arrival": "2024-06-11",
+            "rating": "4.5",
+            "reward": "100",
+            "url": "http://example.com/product/123"
+        }
+        </pre>
+        <p>이런식으로 모든 제품의 데이터가 출력됩니다.</p>
+
+        <h4>응답 예시 (실패)</h4>
+        <pre>
+        {
+            "error": "제품 조회 실패: ${error.message}"
+        }
+        </pre>
+    </div>
+</section>
+<section class="error">
+    <h1>Error Codes Middleware</h1>
+    <p>미들웨어는 두 개의 소프트웨어 시스템 간의 중간 계층 역할을 하며 여기서는 요청과 응답 사이에서 발생하는 다양한 오류를 처리하는 에러 코드 미들웨어에 대해 설명합니다.<br>
+        이 미들웨어는 서버에서 발생하는 다양한 오류 상황을 클라이언트에게 적절한 형태로 전달하는 역할을 합니다.</p>
+    <table border="1">
+        <thead>
+        <tr>
+            <th>Error Name</th>
+            <th>Status Code</th>
+            <th>Error Code</th>
+            <th>Error Message</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>ValidationError</td>
+            <td>400</td>
+            <td>100</td>
+            <td>Bad Request Exception</td>
+            <td>잘못된 요청입니다. 입력값을 확인해주세요.</td>
+        </tr>
+        <tr>
+            <td>AuthenticationError</td>
+            <td>401</td>
+            <td>200</td>
+            <td>Authentication Failed</td>
+            <td>인증에 실패했습니다. 로그인 정보를 확인해주세요.</td>
+        </tr>
+        <tr>
+            <td>PermissionError</td>
+            <td>403</td>
+            <td>210</td>
+            <td>Permission Denied</td>
+            <td>권한이 없습니다. 접근 권한을 확인해주세요.</td>
+        </tr>
+        <tr>
+            <td>NotFoundError</td>
+            <td>404</td>
+            <td>300</td>
+            <td>Not Found Exception</td>
+            <td>찾을 수 없습니다. URL을 확인해주세요.</td>
+        </tr>
+        <tr>
+            <td>QuotaExceededError</td>
+            <td>429</td>
+            <td>400</td>
+            <td>Quota Exceeded</td>
+            <td>할당량을 초과했습니다. 나중에 다시 시도해주세요.</td>
+        </tr>
+        <tr>
+            <td>RateLimitError</td>
+            <td>429</td>
+            <td>420</td>
+            <td>Rate Limited</td>
+            <td>요청이 너무 많습니다. 잠시 후 다시 시도해주세요.</td>
+        </tr>
+        <tr>
+            <td>RequestEntityTooLargeError</td>
+            <td>413</td>
+            <td>430</td>
+            <td>Request Entity Too Large</td>
+            <td>요청한 내용이 너무 큽니다. 크기를 줄여서 다시 시도해주세요.</td>
+        </tr>
+        <tr>
+            <td>ServiceUnavailableError</td>
+            <td>503</td>
+            <td>500</td>
+            <td>Service Unavailable</td>
+            <td>서비스를 사용할 수 없습니다. 잠시 후 다시 시도해주세요.</td>
+        </tr>
+        <tr>
+            <td>GatewayTimeoutError</td>
+            <td>504</td>
+            <td>510</td>
+            <td>Gateway Timeout</td>
+            <td>응답 시간이 초과되었습니다. 잠시 후 다시 시도해주세요.</td>
+        </tr>
+        <tr>
+            <td>Default (Unexpected Error)</td>
+            <td>500</td>
+            <td>900</td>
+            <td>Unexpected Error</td>
+            <td>알 수 없는 오류가 발생했습니다. 다시 시도해주세요.</td>
+        </tr>
+        </tbody>
+    </table>
+</section>
+
+<section class="guide">
+    <div class="get-id">
+        <h1>조건부 조회</h1>
+        <h2>EndPoint</h2>
+        <h3>GET users/user/{uid}</h3>
+        <p>이 앤드포인는 특정 유저를 조회하는 역할을 합니다. 클라이언트가 users/user/{uid} 엔드포인트로 GET 요청을 보내면, 특정 유저 아이디의 유저 정보를 조회합니다. 성공 시 모든 유저 정보를 반환하며 실패 시 오류 메시지를 반환합니다.</p>
+
+        <h4>Path parameter</h4>
+        <table border="1">
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td>{uid}</td>
+                <td>유저의 고유 ID입니다.</td>
+            </tr>
+        </table>
+
+        <h4>Query string parameter</h4>
+        <table border="1">
+            <tr>
+                <th>Name</th>
+                <th>Type</th>
+            </tr>
+            <tr>
+                <td>없음</td>
+                <td>이 엔드포인트에는 Query string parameter가 없습니다.</td>
+            </tr>
+        </table>
+
+        <h4>응답 예시 (성공)</h4>
+        <pre>
+        {
+            "uid": "123456",
+            "name": "홍길동",
+            "age": 25,
+            "city": "서울",
+            "email": "hong@example.com",
+            "phone": "010-1234-5678",
+            "gender": "남성",
+            "occupation": "개발자",
+            "join_date": "2023-06-07",
+            "address": "서울특별시 강남구",
+            "password": "securepassword123"
+        }
+        </pre>
+        <p>이런식으로 특정 아이디의 유저 데이터가 출력됩니다.</p>
+
+        <h4>응답 예시 (실패)</h4>
+        <pre>
+        {
+            "error": "유저 조회 실패: ${error.message}"
+        }
+        </pre>
+        <pre>
+        {
+            "error": "유저를 찾을 수 없음"
+        }
+        </pre>
+    </div>
+    <section class="error">
+        <h1>Error Codes Middleware</h1>
+        <p>미들웨어는 두 개의 소프트웨어 시스템 간의 중간 계층 역할을 하며 여기서는 요청과 응답 사이에서 발생하는 다양한 오류를 처리하는 에러 코드 미들웨어에 대해 설명합니다.<br>
+            이 미들웨어는 서버에서 발생하는 다양한 오류 상황을 클라이언트에게 적절한 형태로 전달하는 역할을 합니다.</p>
+        <table border="1">
+            <thead>
+            <tr>
+                <th>Error Name</th>
+                <th>Status Code</th>
+                <th>Error Code</th>
+                <th>Error Message</th>
+                <th>Description</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>ValidationError</td>
+                <td>400</td>
+                <td>100</td>
+                <td>Bad Request Exception</td>
+                <td>잘못된 요청입니다. 입력값을 확인해주세요.</td>
+            </tr>
+            <tr>
+                <td>AuthenticationError</td>
+                <td>401</td>
+                <td>200</td>
+                <td>Authentication Failed</td>
+                <td>인증에 실패했습니다. 로그인 정보를 확인해주세요.</td>
+            </tr>
+            <tr>
+                <td>PermissionError</td>
+                <td>403</td>
+                <td>210</td>
+                <td>Permission Denied</td>
+                <td>권한이 없습니다. 접근 권한을 확인해주세요.</td>
+            </tr>
+            <tr>
+                <td>NotFoundError</td>
+                <td>404</td>
+                <td>300</td>
+                <td>Not Found Exception</td>
+                <td>찾을 수 없습니다. URL을 확인해주세요.</td>
+            </tr>
+            <tr>
+                <td>QuotaExceededError</td>
+                <td>429</td>
+                <td>400</td>
+                <td>Quota Exceeded</td>
+                <td>할당량을 초과했습니다. 나중에 다시 시도해주세요.</td>
+            </tr>
+            <tr>
+                <td>RateLimitError</td>
+                <td>429</td>
+                <td>420</td>
+                <td>Rate Limited</td>
+                <td>요청이 너무 많습니다. 잠시 후 다시 시도해주세요.</td>
+            </tr>
+            <tr>
+                <td>RequestEntityTooLargeError</td>
+                <td>413</td>
+                <td>430</td>
+                <td>Request Entity Too Large</td>
+                <td>요청한 내용이 너무 큽니다. 크기를 줄여서 다시 시도해주세요.</td>
+            </tr>
+            <tr>
+                <td>ServiceUnavailableError</td>
+                <td>503</td>
+                <td>500</td>
+                <td>Service Unavailable</td>
+                <td>서비스를 사용할 수 없습니다. 잠시 후 다시 시도해주세요.</td>
+            </tr>
+            <tr>
+                <td>GatewayTimeoutError</td>
+                <td>504</td>
+                <td>510</td>
+                <td>Gateway Timeout</td>
+                <td>응답 시간이 초과되었습니다. 잠시 후 다시 시도해주세요.</td>
+            </tr>
+            <tr>
+                <td>Default (Unexpected Error)</td>
+                <td>500</td>
+                <td>900</td>
+                <td>Unexpected Error</td>
+                <td>알 수 없는 오류가 발생했습니다. 다시 시도해주세요.</td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+
+<section class="guide">
+    <div class="get-book-by-id">
+        <h2>EndPoint</h2>
+        <h3>GET books/info/{id}</h3>
+        <p>이 앤드포인트는 특정 아이디의 책을 조회하는 역할을 합니다. 클라이언트가 books/info/{id} 엔드포인트로 GET 요청을 보내면, 특정 아이디의 책 정보를 조회합니다. 성공 시 특정 책의 정보를 반환하며 실패 시 오류 메시지를 반환합니다.</p>
+
+        <h4>Path parameter</h4>
+        <table border="1">
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td>{id}</td>
+                <td>책의 고유 ID입니다.</td>
+            </tr>
+        </table>
+
+        <h4>Query string parameter</h4>
+        <table border="1">
+            <tr>
+                <th>Name</th>
+                <th>Type</th>
+
+            </tr>
+            <tr>
+                <td>없음</td>
+                <td>이 엔드포인트에는 Query string parameter가 없습니다.</td>
+            </tr>
+        </table>
+
+        <h4>응답 예시 (성공)</h4>
+        <pre>
+        {
+            "book_id": 2,
+            "name": "예약판매 최고의 프로덕트는 무엇이 다른가",
+            "category": "Computer Science",
+            "author": "공옥순",
+            "publisher": "2024.05.31",
+            "discount": "10%",
+            "price": "14,850원",
+            "price_normal": "정가16,500원",
+            "point": "820p",
+            "description": "소",
+            "review": "0.0",
+            "img": "kyobo/book_img_002.jpg"
+        }
+        </pre>
+        <p>이런식으로 특정 책의 데이터가 출력됩니다.</p>
+
+        <h4>응답 예시 (실패)</h4>
+        <pre>
+        {
+            "error": "책 가져오기 실패: ${error.message}"
+        }
+        </pre>
+    </div>
+</section>
+<section class="error">
+    <h1>Error Codes Middleware</h1>
+    <p>미들웨어는 두 개의 소프트웨어 시스템 간의 중간 계층 역할을 하며 여기서는 요청과 응답 사이에서 발생하는 다양한 오류를 처리하는 에러 코드 미들웨어에 대해 설명합니다.<br>
+        이 미들웨어는 서버에서 발생하는 다양한 오류 상황을 클라이언트에게 적절한 형태로 전달하는 역할을 합니다.</p>
+    <table border="1">
+        <thead>
+        <tr>
+            <th>Error Name</th>
+            <th>Status Code</th>
+            <th>Error Code</th>
+            <th>Error Message</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>ValidationError</td>
+            <td>400</td>
+            <td>100</td>
+            <td>Bad Request Exception</td>
+            <td>잘못된 요청입니다. 입력값을 확인해주세요.</td>
+        </tr>
+        <tr>
+            <td>AuthenticationError</td>
+            <td>401</td>
+            <td>200</td>
+            <td>Authentication Failed</td>
+            <td>인증에 실패했습니다. 로그인 정보를 확인해주세요.</td>
+        </tr>
+        <tr>
+            <td>PermissionError</td>
+            <td>403</td>
+            <td>210</td>
+            <td>Permission Denied</td>
+            <td>권한이 없습니다. 접근 권한을 확인해주세요.</td>
+        </tr>
+        <tr>
+            <td>NotFoundError</td>
+            <td>404</td>
+            <td>300</td>
+            <td>Not Found Exception</td>
+            <td>찾을 수 없습니다. URL을 확인해주세요.</td>
+        </tr>
+        <tr>
+            <td>QuotaExceededError</td>
+            <td>429</td>
+            <td>400</td>
+            <td>Quota Exceeded</td>
+            <td>할당량을 초과했습니다. 나중에 다시 시도해주세요.</td>
+        </tr>
+        <tr>
+            <td>RateLimitError</td>
+            <td>429</td>
+            <td>420</td>
+            <td>Rate Limited</td>
+            <td>요청이 너무 많습니다. 잠시 후 다시 시도해주세요.</td>
+        </tr>
+        <tr>
+            <td>RequestEntityTooLargeError</td>
+            <td>413</td>
+            <td>430</td>
+            <td>Request Entity Too Large</td>
+            <td>요청한 내용이 너무 큽니다. 크기를 줄여서 다시 시도해주세요.</td>
+        </tr>
+        <tr>
+            <td>ServiceUnavailableError</td>
+            <td>503</td>
+            <td>500</td>
+            <td>Service Unavailable</td>
+            <td>서비스를 사용할 수 없습니다. 잠시 후 다시 시도해주세요.</td>
+        </tr>
+        <tr>
+            <td>GatewayTimeoutError</td>
+            <td>504</td>
+            <td>510</td>
+            <td>Gateway Timeout</td>
+            <td>응답 시간이 초과되었습니다. 잠시 후 다시 시도해주세요.</td>
+        </tr>
+        <tr>
+            <td>Default (Unexpected Error)</td>
+            <td>500</td>
+            <td>900</td>
+            <td>Unexpected Error</td>
+            <td>알 수 없는 오류가 발생했습니다. 다시 시도해주세요.</td>
+        </tr>
+        </tbody>
+    </table>
+</section>
 </body>
 </html>

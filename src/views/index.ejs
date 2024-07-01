@@ -115,6 +115,8 @@
             url = `http://34.197.44.20/books/info/${input}`;
         } else if (type === 'products') {
             url = `http://34.197.44.20/coupang_products/product/${input}`;
+        } else if (type === 'github') {
+            url = `http://34.197.44.20/github/repos/${input}`;
         }
 
         fetch(url)

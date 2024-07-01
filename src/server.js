@@ -1,6 +1,6 @@
 // 모듈 임포트
 import express from "express";
-import dotenv from "dotenv";
+import dotenv from 'dotenv';
 import cors from "cors";
 import path from "path";
 import { fileURLToPath } from "url";
@@ -11,16 +11,19 @@ import authRouter from "./routes/auth/auth.js";
 import adminRouter from "./routes/users.js";
 import coupangRouter from "./routes/products/coupang.js";
 import {retryMiddleware, timeoutMiddleware} from "./middlewares/retry.js";
+import githubRouter from "./routes/github/issue.js"
 
 // __dirname 및 __filename 설정
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
 
 // 서버 설정
 const app = express();
 dotenv.config();         // 환경변수 읽어오기
 app.use(cors());         // 모든 프론트 서버 허용
 app.use(express.json()); // JSON 형식의 요청 본문을 파싱
+
 
 // ejs 를 사용자 뷰 엔진으로 설정
 app.set('view engine', 'ejs');
@@ -50,7 +53,8 @@ app.get("/", (req, res) => {
         inputSections: [
             { type: "users", label: "/admin/user/", placeholder: "유저의 ID를 입력하세요" },
             { type: "books", label: "/books/info/", placeholder: "책의 ID를 입력하세요" },
-            { type: "products", label: "/coupang_products/product/", placeholder: "제품의 ID를 입력하세요" }
+            { type: "products", label: "/coupang_products/product/", placeholder: "제품의 ID를 입력하세요" },
+            { type: "github", label: "/github/repos/", placeholder: "유저 ID/레포지트리 이름" }
         ]
     };
 
@@ -62,7 +66,7 @@ app.use("/auth", authRouter)
 app.use("/books", booksRouter);
 app.use("/users", adminRouter)
 app.use("/coupang-products", coupangRouter);
-
+app.use("/github", githubRouter);
 // Timeout
 app.use(timeoutMiddleware);
 app.use(retryMiddleware);
